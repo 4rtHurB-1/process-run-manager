@@ -1,0 +1,70 @@
+const express = require("express");
+const { exec } = require("child_process");
+
+const PORT = process.env.PORT || 3000;
+
+const app = express();
+
+const runApp = (appName, appIndex) => {
+  console.log(`sh ../${appName}/run.sh ${appIndex}`);
+  exec(`sh ../${appName}/run.sh ${appIndex}`, (error, stdout, stderr) => {
+    console.log(stdout);
+    console.log(stderr);
+    if (error !== null) {
+      console.log(`exec error: ${error}`);
+    }
+  });
+};
+
+const stopApp = (appName, appIndex) => {
+  console.log(
+    `sh ../${appName}/stop.sh ${appIndex}`,
+    (error, stdout, stderr) => {
+      console.log(stdout);
+      console.log(stderr);
+      if (error !== null) {
+        console.log(`exec error: ${error}`);
+      }
+    }
+  );
+};
+
+app.use("/run", async (req, res) => {
+  try {
+    const apps = req.query.apps ? req.query.apps.split(",") : null;
+    if (apps) {
+      for (let app of apps) {
+        const appIndex = app.split("-")[app.split("-").length - 1];
+        runApp(app, appIndex);
+      }
+    }
+    res.status(200).send("OK");
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+});
+
+app.use("/stop", async (req, res) => {
+  try {
+    const apps = req.query.apps ? req.query.apps.split(",") : null;
+    if (apps) {
+      for (let app of apps) {
+        const appIndex = app.split("-")[app.split("-").length - 1];
+        stopApp(app, appIndex);
+      }
+    }
+    res.status(200).send("OK");
+  } catch (e) {
+    res.status(400).send(e.message);
+  }
+});
+
+app.use("/", async (req, res) => {
+  res.status(200).send("It works :)");
+});
+
+app.listen(PORT, async () => {
+  console.log(`Start olx-cron-run-manager (port=${PORT})`);
+});
+
+module.exports = app;
