@@ -6,8 +6,8 @@ const PORT = process.env.PORT || 3000;
 const app = express();
 
 const runApp = (appName, appIndex) => {
-  console.log(`sh ../${appName}/run.sh ${appIndex}`);
-  exec(`sh ../${appName}/run.sh ${appIndex}`, (error, stdout, stderr) => {
+  console.log(`cd ../${appName} && sh run.sh ${appIndex}`);
+  exec(`cd ../${appName} && sh run.sh ${appIndex}`, (error, stdout, stderr) => {
     console.log(stdout);
     console.log(stderr);
     if (error !== null) {
@@ -17,16 +17,15 @@ const runApp = (appName, appIndex) => {
 };
 
 const stopApp = (appName, appIndex) => {
-  console.log(
-    `sh ../${appName}/stop.sh ${appIndex}`,
-    (error, stdout, stderr) => {
-      console.log(stdout);
-      console.log(stderr);
-      if (error !== null) {
-        console.log(`exec error: ${error}`);
-      }
+  console.log(`cd ../${appName} && sh stop.sh ${appIndex}`);
+
+  exec(`cd ../${appName} && sh stop.sh ${appIndex}`, (error, stdout, stderr) => {
+    console.log(stdout);
+    console.log(stderr);
+    if (error !== null) {
+      console.log(`exec error: ${error}`);
     }
-  );
+  });
 };
 
 app.use("/run", async (req, res) => {
