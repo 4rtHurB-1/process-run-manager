@@ -23,8 +23,8 @@ const stopApp = (appName, appIndex) => {
   exec(
     `cd ../${appName} && sh stop.sh ${appIndex}`,
     (error, stdout, stderr) => {
-      if (!error && appIndex === 'olx-cron-z') {
-        logger.debug(`Olx-crawler зупинено`);
+      if (!error && appName === 'olx-cron-z') {
+        logger.debug(`OLX Crawler зупинено`);
       }
       console.log(stdout);
       console.log(stderr);
