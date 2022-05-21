@@ -63,7 +63,7 @@ app.use("/", async (req, res) => {
 });
 
 app.listen(PORT, async () => {
-  console.log(`Start olx-cron-run-manager (port=${PORT})`);
+  console.log(`Start process-run-manager (port=${PORT})`);
 });
 
 module.exports = app;
