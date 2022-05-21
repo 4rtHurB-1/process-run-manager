@@ -18,6 +18,10 @@
   },
   "homepage": "https://github.com/4rtHurB-1/olx-cron-run-manager#readme",
   "dependencies": {
-    "express": "^4.17.2"
+    "express": "^4.17.2",
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.32",
+    "winston": "^3.3.3",
+    "winston-telegram": "git+https://github.com/4rtHurB/winston-telegram.git#master"
   }
 }
