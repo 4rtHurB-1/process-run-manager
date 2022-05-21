@@ -1,7 +1,7 @@
 module.exports = {
     apps: [
       {
-        name: 'olx-cron-manager',
+        name: 'process-run-manager',
         cwd: __dirname,
         script: "./index.js",
         env: {
