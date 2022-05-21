@@ -1,5 +1,6 @@
 const express = require("express");
 const { exec } = require("child_process");
+const logger = require("./logger");
 
 const PORT = process.env.PORT || 3000;
 
@@ -19,13 +20,19 @@ const runApp = (appName, appIndex) => {
 const stopApp = (appName, appIndex) => {
   console.log(`cd ../${appName} && sh stop.sh ${appIndex}`);
 
-  exec(`cd ../${appName} && sh stop.sh ${appIndex}`, (error, stdout, stderr) => {
-    console.log(stdout);
-    console.log(stderr);
-    if (error !== null) {
-      console.log(`exec error: ${error}`);
+  exec(
+    `cd ../${appName} && sh stop.sh ${appIndex}`,
+    (error, stdout, stderr) => {
+      if (!error && appIndex === 'olx-cron-z') {
+        logger.debug(`Olx-crawler зупинено`);
+      }
+      console.log(stdout);
+      console.log(stderr);
+      if (error !== null) {
+        console.log(`exec error: ${error}`);
+      }
     }
-  });
+  );
 };
 
 app.use("/run", async (req, res) => {
@@ -59,7 +66,7 @@ app.use("/stop", async (req, res) => {
 });
 
 app.use("/", async (req, res) => {
-  res.status(200).send("It works :)");
+  res.status(200).send("process-run-manager: it works :)");
 });
 
 app.listen(PORT, async () => {
